@@ -35,9 +35,14 @@ $bwix['paths2'] = '<p>me-sida:<a href="http://www.student.bth.se/~bjvi13/oophp/k
 $bwix['paths2'] .= '<p>bwix: <a href="http://www.student.bth.se/~bjvi13/oophp/kmom02/kmom02Mall/webroot/hello.php">bwix-sidan</a>' ;
 $bwix['paths2'] .= '<p>me-sida:<a href="' . $mepath . '">me-sidan</a>';
 $bwix['paths2'] .= '<p>bwix:<a href="' . $mepath . "/../hello.php" . '">bwix-sidan</a>';
-$bwix['paths2'] .= '<p>github: <a href="https://github.com/erikwi2000/kmom01Mall">github</a>';
+$bwix['paths2'] .= '<p>github: <a href="https://github.com/erikwi2000/kmom02Mall">github</a>';
 
-
+// Fixa länkarna både statiska och dynamiska kmom02
+$bwix['paths3'] = '<p>me-sida:<a href="http://www.student.bth.se/~bjvi13/oophp/kmom03/kmom03Mall/webroot/me.php">me-sidan</a>';
+$bwix['paths3'] .= '<p>bwix: <a href="http://www.student.bth.se/~bjvi13/oophp/kmom03/kmom03Mall/webroot/hello.php">bwix-sidan</a>' ;
+$bwix['paths3'] .= '<p>me-sida:<a href="' . $mepath . '">me-sidan</a>';
+$bwix['paths3'] .= '<p>bwix:<a href="' . $mepath . "/../hello.php" . '">bwix-sidan</a>';
+$bwix['paths3'] .= '<p>github: <a href="https://github.com/erikwi2000/kmom03Mall">github</a>';
 
 
 $bwix['main'] = <<<EOD
@@ -120,16 +125,49 @@ koden validerat "där uppe".
 
 
 {$bwix['paths2']} 
-<h2>Kmom03: ...</h2>
+<h2>Kmom03: SQL och databasen MySQL</h2>
 
-<p>Redovisningstext...</p>
+<h3>Gått igenom:</h3>
+<ol>
+<li>Kom igång med databasen MySQL och dess klienter</li>
+<li>BTH's labbmiljö för databasen MySQL</li>
+<li>Kom igång med SQL</li>
 
+</ol>
 
+Har bara hört talas om databaser aldrig använt eller blivit bekant med principen.
+    
+  <h3> Flera olika verktyg:</h3>
+       <ul>
+           <li> Workbench riktigt nice, ger ibland begripliga tips för rättning av fel,
+            <li> PHPMyAdmin har jag kört men int använt så mycket.
+<li> Kört Command line också men inte så mycket.
+<li> Har mest kört lokalt, det var vissa begränsningar såväl som viss instabilitet i uppkopplingen (putty)
+<li> SQL-övningen moment 3 var riktigt rolig. Det blev svårare på slutet men mycket information fanns ju med i kompendiet.
+</ul>
+
+   
+   
+   Mycket information, men logiskt, blir dock komplicerat i slutat av
+kursmomentet.
+
+MEN det ser väldigt kraftfullt ut tack vara att verktyget "plockar fram" alla kopplingar
+mellan olika data på ett konsistent sätt.
+
+Spara olika kodbitar verkar bra. Jag antar att då man gör databaser "på riktigt" så lagrar man MySQL koden för databasen för backup etc.
+
+<p> Momentet som helhet fungerar bra. Just de olika uppkopplingarna kan gärna vara mer precisa i beskrivningarna. 
+Lösenordshanteringen till MySQL på servern känns lite "klumpig" jag hitta i alla fall
+inget sätt att skapa mitt eget lösenord utan sparade email som jag gick tillbaka till för inloggning.
+    Nu var det lite problem med an av anslutningarna tog detta i forumet:
+http://dbwebb.se/forum/viewtopic.php?f=37&amp;t=2161&amp;p=18393#p18393
+
+{$bwix['paths3']} 
 <h2>Kmom04: ...</h2>
 
 <p>Redovisningstext...
 www.websequencediagrams.com så nice speciellt napkin<br>
-kkkkkkkkkkkkkkkkk
+
 
 </p>
 

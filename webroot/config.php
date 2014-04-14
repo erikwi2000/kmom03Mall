@@ -24,6 +24,15 @@ define('BWI_INSTALL_PATH', __DIR__ . '/../');
 define('BWI_THEME_PATH', BWI_INSTALL_PATH . 'theme/render.php');
 //echo  "BWI theme path <br>" . BWI_THEME_PATH . "</br>";
 //	var_dump(BWI_THEME_PATH);
+//------------------------------------------------------------------
+
+//-------------------------------------------------------------
+
+
+
+
+
+
 
 /**
  * Include bootstrapping functions.
@@ -133,6 +142,11 @@ $bwix['navbar'] = array(
 //$bwix['favicon']    = 'img/me1favicon.png';
 //xxxxx$bwix['favicon']    = 'favicon_oophp.ico';
 
+$bwix['stylesheets'][] = 'css/dice.css'; 
+
+// Do it and store it all in variables in the BWi container.
+
+$bwix['title'] = "Tärning";
 
 /**
  * Settings for JavaScript.

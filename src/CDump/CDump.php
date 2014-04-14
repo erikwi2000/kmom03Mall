@@ -21,26 +21,7 @@ public $flergang = "gånger.";
  
  
  
- /*
-  public function GetInitResult () {
 
-      if(isset($_SESSION['dicehand'])) {
-  $hand = $_SESSION['dicehand'];
-}
-else {
-	$hand = new CDiceHand(1);
-  $_SESSION['dicehand'] = $hand;
-}
-   //  unset($dicehand);
-    $hand->sumRound = 0;
-    $hand->sumRoundAll = 0;		
-		$hand->rounds = 0;
-		$hand->highScore = 0;	
-		$this->dicePic = array();		
-	//	$hand->dicePic = ""; 
-  }
-
- */
 
  
   public function GetNollResult () {
@@ -66,15 +47,16 @@ else {
 		$totall = $hand->GetRoundTotal(); 
 		$hand->CleanSumRound();
 		$temp = $hand->GetSumRound();
-		$statStringNoll = "<h4>Din summa: $temp "; 		
+		$statStringNoll = "<h3>Din summa har nollats och adderats till Sparad score! </h3> "; 		
 		$ppppp = $hand->GetRoundsOK();	
 		if($ppppp == 1) {
-			$statStringNoll .= "Du har kastat tärningen: $ppppp $engang "; 
+			$statStringNoll .= "<h4>Du har kastat tärningen: $ppppp $engang </h4>"; 
 		}
 		else {
-			$statStringNoll .= "Du har kastat tärningen: $ppppp $flergang "; 
+			$statStringNoll .= "<h4>Du har kastat tärningen: $ppppp $flergang </h4>"; 
 		}
-		$statStringNoll .= "Highscore: $highScore</h4>"; 
+                if($hand->noRolls){}
+		$statStringNoll .= "<h3>Sparad score: $highScore</h3>"; 
 		$hand->CleanSumRound();
                // echo "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk";
 return $statStringNoll;
@@ -131,63 +113,164 @@ else {
 //-------
 
 //--------------------
- $roll = TRUE;
+// $roll = TRUE;
+ //$out = FALSE;
  $engang = "gång.";
  $flergang = "gånger.";
- $statStringRoll = "";
-if($roll){ 
-    if ( $hand->GetRoundTotal() != 100){ 
-//		echo "<br>--" .  $hand->GetRoundTotal();
-    if ($hand->GetRolls() != 1){ 
-            $statStringRoll = "<h4>Du slog en: " .  $hand->GetRolls() . "'a. <br>"; 		
-				} else { 
-            $statStringRoll = "<h4>Tyvärr du slog en " . 
-						$hand->GetRolls(). "'a och dina poäng nollställs!!!"; 
-            $hand->CleanSumRound(); 				
-						$hand->SetRoundTotal() ;
-        } 
-    } 
-		else{ 
-                if ($hand->GetRolls() != 1){
-        $statStringRoll .= "<h2>Grattis! Du har uppnått 100 poäng!!!"; 
-        if(($hand->getHighScore() == 0) || 
-				($hand->GetRolls() < $hand->getHighScore())){ 
-                $hand->setHighScore(); 
-                $statStringRoll .= 
-		"<br>Du är hemma till 100!</h3>"; 
-            
-        } 
-                }
-                else {
-                    
-                 $statStringRoll = "<h4>Tyvärr du slog en " . 
-						$hand->GetRolls(). "'a och dina poäng nollställs!!!"; 
-            $hand->CleanSumRound(); 				
-						$hand->SetRoundTotal() ;   
-                    
-                }
-    } 
-		$tot = $hand->GetSumRound();
-		$statStringRoll .= " Din summa: $tot";		
-		$totall = $hand->GetRoundTotal(); 
-		$statStringRoll .= " Din summaTotalt: $totall "; 
-		
-	$ppppp = $hand->GetRoundsOK();	
-	if($ppppp == 1) {
-	$statStringRoll .= "Du har kastat tärningen: $ppppp $engang "; 
-	}
-	else {
-		$statStringRoll .= "Du har kastat tärningen: $ppppp $flergang "; 
-		}
-	
-	$highScore = $hand->GetHighScore();
-	$statStringRoll .= "Highscore: $highScore</h4>"; 
-       // $statStringRoll .="in dump";
-return $statStringRoll;
- }}
+ $statStringRoll = "<br>";
+// $statStringRollGo = "-----";
+//  $statStringRollW = "";
+ //   $statStringRollL = "";
+    		$totall = $hand->GetRoundTotal(); 
+       //         $noMore = FALSE;
+ //if(!$hand->winnerTakesAll){
+ //echo "ddddd " . $hand->winner;
+ 
+      
+ //---------------------------
 
- public function GetAdd1Part() {
+if (!$hand->noRolls) { 
+                 if ($hand->GetRolls() == 1)
+                     // ETTA
+                        { 
+                     // xxxxx  echo "<br> Round total 1" . $hand->GetRoundTotal();
+                            $statStringRoll .= "<h2>Tyvärr!</h2> Du slog en " . 
+                            $hand->GetRolls(). "'a och dina OSPARADE poäng har nollställs!!!<br>"; 
+                            $hand->CleanSumRound(); 				
+                            $hand->SetRoundTotal() ; 
+                            		$tot = $hand->GetSumRound();
+                                        $statStringRoll .= "<h3> Din runda: $tot </h3>";		
+                                        $totall = $hand->GetRoundTotal(); 
+                                        if($totall > 3){
+                                        $statStringRoll .= "<h3>  Din summa : $totall  kvar</h3><br>"; 
+                                        $hand->SetRoundTotal() ;           
+                                        
+                                        }
+                                        else {
+                                        $statStringRoll .= "<h3>  Tyvärr din summa : $totall  \"lite\" kvar</h3><br>"; 
+                   
+                                }                           
+                        }
+                          // Slut ETTA
+                        else
+                             //Före EJ ETTA
+                       {
+                   if($hand->GetRoundTotal()  > 100)
+                            {
+      // xxxxx  echo "<br> Round total 2" . $hand->GetRoundTotal();
+  
+                            $totall = $hand->GetRoundTotal();
+                                      // xxxxx  echo  "<br>mm 5inside! $totall"; 
+                            // xxxxx  echo "<br> > 100";
+                       		$statStringRoll .= "<h3>Din runda är INTE:"; 
+                                $statStringRoll .= "<br> $totall är 'OutOfBounds' försök med nytt spel!</h3>";
+                                $hand->noRolls = TRUE;
+                             return $statStringRoll;   
+                        }
+
+                        if($hand->GetRoundTotal()  == 100)
+             // Kolla               
+                        {
+                       $statStringRoll .= "<h2>Grattis! Du har uppnått 100 poäng!!!";        
+                               { 
+                                               // xxxxx  echo  "<br>mm 3inside!"; 
+                               $hand->setHighScore(); 
+                               $statStringRoll .= 
+                               "<br>Du är hemma till 100!</h3>"; 
+                               $hand->winner = TRUE; 
+                               $hand->noRolls = TRUE;
+                                return $statStringRoll; 
+                           //    $this->winner2 = TRUE;
+                               } 
+                                           // xxxxx  echo  "<br>mm 4inside! <br> $statStringRoll"; 
+                                           
+                        }
+                          if($hand->GetRoundTotal()  < 100
+                                  
+                                  
+                                  
+                                
+                                  
+                                  
+                                  
+                                  )
+                                {
+                            		$tot = $hand->GetSumRound();
+                                
+		$statStringRoll .= "<h3>Din runda: $tot";		
+		$totall = $hand->GetRoundTotal(); 
+		$statStringRoll .= " Din summa totalt: $totall</h3> "; 
+                           // xxxxx  echo "<br> < 100";
+                                $ppppp = $hand->GetRoundsOK();	
+                                if($ppppp == 1) 
+                                    {
+                                         $statStringRoll .= "<h3>Du har kastat tärningen: $ppppp $engang "; 
+                                }
+                                else 
+                                    {
+                                         $statStringRoll .= "<h3> Du har kastat tärningen: $ppppp $flergang "; 
+                                    }
+                                    	$highScore = $hand->GetHighScore();
+                                        $statStringRoll .= " Sparad score: $highScore</h3>"; 
+                        }
+                        }
+                 //    $statStringRoll .= "jjjjjjjjjjjjjjjjj"; 
+                }
+ //Efter EJ ETTA
+ //----------------------------------
+
+	if($hand->noRolls) 
+    {$statStringRoll = "<h2> Game Over! <br> No more rolls!</h2>"
+        . "<h3> Start new game or destroy  Session </h3>" ;
+	if($hand->GetHighScore() == 100){ 
+            $statStringRoll .= " Your WINNER Score: " . $hand->GetHighScore() . " Be HAPPY!</h3>";  
+        }
+     return $statStringRoll;
+     }
+                         if(($totall) < 100){
+                     //      $statStringRoll .= "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"; 
+                         return $statStringRoll;   
+                         }
+
+                         
+   $statStringRoll = "<h1>HJÄLP!</h1> <br> Tänk rät!"
+           . "<br>Gör Rätt"
+           . "<br> starta om!";                      
+                           return $statStringRoll;
+                    
+                           
+                         if(($totall == 100) ){
+                             
+                         $statStringRoll = "<h2>Fortfarande vinnare</h2>"
+                                 . "<br> <h3>Starta spel eller förstör session</h3>";
+                   
+                           
+      //1-100  
+                         $hand->winner = TRUE; 
+                        $hand->noRolls = TRUE; 
+                        return $statStringRoll;
+                                                    }
+                        
+                         
+
+     
+     
+     
+} 
+  
+
+ 
+
+ public function GetAddPart1() {
+     
+   
    $transport =<<<EOD
+
+<article class="readable">
+        
+           
+           
+           
 <h2>Spela tärning till 100</h2>
 <p> Spelet är att summera alla slag och försöka nå till 
 100, vägen kan sparas i steg vartefter. DOCK

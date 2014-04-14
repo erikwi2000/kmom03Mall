@@ -19,6 +19,8 @@ class CDiceHand {
 		public $html;
                 private  $rounds;
                 private $sumRoll;           //summan av alla tärningars slag aka EN träning
+                public $winner;
+                public $noRolls;
 
   /**
    * Constructor
@@ -40,6 +42,7 @@ class CDiceHand {
 		$this->deal = 0;
 		$this->dicePic = array();
 		$this->dicePic = "";
+                $this->noRolls = FALSE;
 		
 					
   }
@@ -61,18 +64,22 @@ else {
      $ffff = "NoActivitySet";
  $roll = isset($_GET['roll']) ? true : false;
  
+ 
+ //if(!$this->noRolls){
  if($roll){$choice = "roll"; 
+ 
   $this->Roll();
 $ffff = $dump->GetRollResult();
 //echo "<br> ffff result" . $ffff;
  }
+ //}
  
 $init = isset($_GET['init']) ? true : false;
 
  if($init){$choice = "init";
   $this->InitRound();
   $ffff = $this->GetInitResult();
-//echo "<br> hhhh result" . $ffff;
+// xxxx echo "<br> hhhh result" . $ffff;
  }
  
 $noll = isset($_GET['noll']) ? true : false; 
@@ -82,8 +89,10 @@ $noll = isset($_GET['noll']) ? true : false;
   $ffff = $dump->GetNollResult();
 //echo "<br> gggg result" . $ffff;
  }
- 
+
  //return $choice;
+ 
+ 
  return $ffff;
  
  }
@@ -91,6 +100,7 @@ $noll = isset($_GET['noll']) ? true : false;
   
 	
   public function GetInitResult () {
+      $this-> faul = FALSE;
 
       if(isset($_SESSION['dicehand'])) {
   $hand = $_SESSION['dicehand'];
@@ -104,9 +114,14 @@ else {
     $hand->sumRoundAll = 0;		
 		$hand->rounds = 0;
 		$hand->highScore = 0;	
-		$this->dicePic = array();		
+		$this->dicePic = array();
+                $hand->noRolls = FALSE;
+                $winner = FALSE;
+              //  $winner2 = FALSE;
 	//	$hand->dicePic = ""; 
-                
+                $initOutput = "<br> <br><h3>Rundan initierad!!</h3>";
+                return $initOutput;
+              
   }
 
 
@@ -118,11 +133,16 @@ else {
 	
     $this->sum = 0;
     for($i=0; $i < $this->numDices; $i++) {
-      $roll = $this->dices[$i]->Roll(1);
+      
+
+        $roll = $this->dices[$i]->Roll(1);
+
+               if(!$this->noRolls){         
       $this->sum += $roll;
       $this->sumRound += $roll;
 			$this->sumRoundAll += $roll;	
-								$this->dicePic[] += $roll;	
+      					$this->dicePic[] += $roll;
+              }
 		//		print_r($this->dicePic) ;	
 
 
@@ -175,6 +195,7 @@ else {
 		$this->highScore = 0;	
 		$this->dicePic = array();		
 	//	$this->dicePic = "";
+        //        $hand->winner = FALSE;
   }
 	public function CleanHighScore() {
 			$this->highScore = 0;	
@@ -247,7 +268,135 @@ else {
 			    $this->sumRound = 0;
 	}
 
+public function GetPageInfo() { 
 
 
+//222 START
 
+// Sanity Check, unnecessary??
+if(isset($_SESSION['dump'])) {
+  $dump = $_SESSION['dump'];
+}
+else {
+	$dump = new CDump(1);
+  $_SESSION['dump'] = $dump;
+}
+
+if(isset($_SESSION['dicehand'])) {
+  $hand = $_SESSION['dicehand'];
+}
+else {
+	$hand = new CDiceHand(1);
+  $_SESSION['dicehand'] = $hand;
+}
+//222END
+
+//333START
+$bwix['main'] = $dump->GetAddPart1();
+
+//$statString = "aaa";
+$statString = $hand->GetInputInfo2();
+//$statString .= "bbbb";
+$diceList = "";
+if(!$dest){
+ if($statString !== "NoActivitySet")    {
+$diceList = $hand->GetRollsAsImageList(); 
+ }
+    else 
+        {$statString = "";
+        }
+ 
+ }
+
+ $dest = FALSE;
+ if(isset($statString)) {}
+ else {$statString= "";}
+ 
+ 
+ //333END
+ 
+ 
+ /*
+ //444START
+//---------------------------
+$bwix['main'] .= <<<EOD
+{$diceList}
+{$statString}
+{$bwix['byline']}
+</article> 
+EOD;
+//444END
+*/
+    $page = "fffffffffffffffffffffffffffffffffffffff<br>jjjjj<br>ssss";
+    
+    
+    return $page;
+    
+}
+//=====================================================000
+public function GetInitStarter(){
+    
+    
+        //111START
+    $dest = FALSE;
+  if(isset($_GET['destroy'])){
+$dest = TRUE;
+  }
+if(isset($_GET['destroy'])) { 
+  // Unset all of the session variables. 
+  $_SESSION = array(); 
+//echo "<br> DESTROY "  ;
+  // If it's desired to kill the session, also delete the session cookie. 
+  // Note: This will destroy the session, and not just the session data! 
+
+ if (ini_get("session.use_cookies")) { 
+      $params = session_get_cookie_params(); 
+      setcookie(session_name(), '', time() - 42000, 
+          $params["path"], $params["domain"], 
+          $params["secure"], $params["httponly"] 
+      ); 
+  } 
+
+  // Finally, destroy the session. 
+  session_destroy(); 
+  $sessiondestroyed = 'Spelet rensat!'; 
+} 
+else 
+{ 
+  $sessiondestroyed = ''; 
+} 
+   //111end           
+  return $dest;          
+            
+}
+
+public function StartSessions() {
+// Sanity Check, unnecessary??
+if(isset($_SESSION['dump'])) {
+  $dump = $_SESSION['dump'];
+}
+else {
+	$dump = new CDump(1);
+  $_SESSION['dump'] = $dump;
+}
+
+if(isset($_SESSION['dicehand'])) {
+  $hand = $_SESSION['dicehand'];
+}
+else {
+	$hand = new CDiceHand(1);
+  $_SESSION['dicehand'] = $hand;
+}
+$putte = "PUTTe";
+return $dump;
+//$temp2 = StartSessions();
+
+
+}
+
+public function GetBumpData($i){
+    
+    $i2 = $i*$i;
+    return $i2;
+}
 }
